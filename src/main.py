@@ -1,8 +1,9 @@
 # Main game file
 
-import zork
+import new_zork
 
-zork.Play_Zork()
 
-def PrintOutput(s):
-    print("OUTPUT", s)
+new_zork.Play_Zork()
+
+    
+    

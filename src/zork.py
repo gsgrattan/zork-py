@@ -1,209 +1,373 @@
 import items
+from items import allItems, inventory
+#This is where the magic happens, the while loop is always true but in the case that the player dies or wins, using the ded() function they can leave the game, breaking the while loop.
 
 def Play_Zork():
-	loop = 4
-	print("---------------------------------------------------------")
-	print("Welcome to Zork - The Unofficial Python Version.")
-
-	while True:
-		# First Input Loop
-		while loop == 4:
-			if loop == 4:
-				print("---------------------------------------------------------")
-				print("You are standing in an open field west of a white house, with a boarded front door.")
-				print("You can see a small lake to the north.")
-				print("(A secret path leads southwest into the forest.)")
-				print("There is a Small Mailbox.")
-				second = input("What do you do? ")
-
-			if second.lower() == ("take mailbox"):
-				print("---------------------------------------------------------")
-				print("It is securely anchored.")
-			elif second.lower() == ("open mailbox"):
-				print("---------------------------------------------------------")
-				print("Opening the small mailbox reveals a leaflet.")
-			elif second.lower() == ("go north"):
-				loop = 1
-			elif second.lower() == ("open door"):
-				print("---------------------------------------------------------")
-				print("The door cannot be opened.")
-			elif second.lower() == ("take boards"):
-				print("---------------------------------------------------------")
-				print("The boards are securely fastened.")
-			elif second.lower() == ("look at house"):
-				print("---------------------------------------------------------")
-				print("The house is a beautiful colonial house which is painted white. It is clear that the owners must have been extremely wealthy.")
-			elif second.lower() == ("go southwest"):
-				loop = 8
-			elif second.lower() == ("read leaflet"):
-				print("---------------------------------------------------------")
-				print("Welcome to the Unofficial Python Version of Zork. Your mission is to find a Jade Statue.")
-			elif second.lower() == ("kick the bucket"):
-				print("---------------------------------------------------------")
-				print("You die.")
-				print("---------------------------------------------------------")
-				dead_inp = input("Do you want to continue? Y/N ")
-				if dead_inp.lower() == ("n"):
-					exit()
-				if dead_inp.lower() == ("y"):
-					Play_Zork()
-			else:
-				print("---------------------------------------------------------")
-
-		# North of House
-		while loop == 1:
-			if loop == 1:
-				print("---------------------------------------------------------")
-				print("You find yourself at the edge of a beautiful lake aside rolling hills.")
-				print("A small pier juts out into the lake.")
-				print("A fishing rod rests on the pier.")
-				print("(You can see a white house in the distance to the south.)")
-				north_house_inp = input("What do you do? ")
-
-			if north_house_inp.lower() == ("go south"):
-				loop = 4
-			elif north_house_inp.lower() == ("swim"):
-				print("---------------------------------------------------------")
-				print("You don't have a change of clothes and you aren't here on vacation.")
-			elif north_house_inp.lower() == ("fish"):
-				print("---------------------------------------------------------")
-				print("You spend some time fishing but nothing seems to bite.")
-			elif north_house_inp.lower() == ("kick the bucket"):
-				print("---------------------------------------------------------")
-				print("You die.")
-				print("---------------------------------------------------------")
-				dead_inp = input("Do you want to continue? Y/N ")
-				if dead_inp.lower() == ("n"):
-					exit()
-				if dead_inp.lower() == ("y"):
-					Play_Zork()
-			else:
-				print("---------------------------------------------------------")
-
-		# Southwest Loop
-		while loop == 8:
-			if loop == 8:
-				print("---------------------------------------------------------")
-				print("This is a forest, with trees in all directions. To the east, there appears to be sunlight.")
-				forest_inp = input("What do you do? ")
-
-			if forest_inp.lower() == ("go west"):
-				print("---------------------------------------------------------")
-				print("You would need a machete to go further west.")
-			elif forest_inp.lower() == ("go north"):
-				print("---------------------------------------------------------")
-				print("The forest becomes impenetrable to the North.")
-			elif forest_inp.lower() == ("go south"):
-				print("---------------------------------------------------------")
-				print("Storm-tossed trees block your way.")
-			elif forest_inp.lower() == ("go east"):
-				loop = 9
-			elif forest_inp.lower() == ("kick the bucket"):
-				print("---------------------------------------------------------")
-				print("You die.")
-				print("---------------------------------------------------------")
-				dead_inp = input("Do you want to continue? Y/N ")
-				if dead_inp.lower() == ("n"):
-					exit()
-				if dead_inp.lower() == ("y"):
-					Play_Zork()
-			else:
-				print("---------------------------------------------------------")
-		
-
-		# East Loop and Grating Input
-		while loop == 9:
-			if loop == 9:
-				print("---------------------------------------------------------")
-				print("You are in a clearing, with a forest surrounding you on all sides. A path leads south.")
-				print("There is an open grating, descending into darkness.")
-				grating_inp = input("What do you do? ")
-
-			if grating_inp.lower() == ("go south"):
-				print("---------------------------------------------------------")
-				print("You see a large ogre and turn around.")
-			elif grating_inp.lower() == ("descend grating"):
-				loop = 10
-			elif grating_inp.lower() == ("kick the bucket"):
-				print("---------------------------------------------------------")
-				print("You die.")
-				print("---------------------------------------------------------")
-				dead_inp = input("Do you want to continue? Y/N ")
-				if dead_inp.lower() == ("n"):
-					exit()
-				if dead_inp.lower() == ("y"):
-					Play_Zork()
-			else:
-				print("---------------------------------------------------------")	
+    print("---------------------------------------------------------")
+    print("Welcome to Zork - The Unofficial Python Version.")
+    print("Enter 'show inventory' at any time to see what items you have")
+    room = 4
+    while True:
+        user_input= get_user_input(room)
+        
+        if room == 1:
+                room = room1(user_input)
+        elif room == 2:
+                room = room2(user_input)
+        elif room == 3:
+                room = room3(user_input)
+        elif room == 4:
+                room = room4(user_input)
+        elif room == 5:
+                room = room5(user_input)
+        elif room == 6:
+                room = room6(user_input)
+        elif room == 7:
+                room = room7(user_input)
+        elif room == 8:
+                room = room8(user_input)
+        elif room == 9:
+                room = room9(user_input)
+        elif room == 10:
+                room = room10(user_input)
+        elif room == 11:
+                room = room11(user_input)
+        elif room == 12:
+                room = room12(user_input)
 
 
-		# Grating Loop and Cave Input
-		while loop == 10:
-			if loop == 10:
-				print("---------------------------------------------------------")
-				print("You are in a tiny cave with a dark, forbidding staircase leading down.")
-				print("There is a skeleton of a human male in one corner.")
-				cave_inp = input("What do you do? ")
+#This function helps clean up some redundant code and deals with resetting/ quitting the game when they win or die     
+def ded():
+        ded_input=input('Do you want to continue? Y/N ')
+        if ded_input.lower() == ('n'):
+                exit()
+        elif ded_input.lower() == ('y'):
+                Play_Zork()
 
-			if cave_inp.lower() == ("descend staircase"):
-				loop = 11
-			elif cave_inp.lower() == ("take skeleton"):
-				print("---------------------------------------------------------")
-				print("Why would you do that? Are you some sort of sicko?")
-			elif cave_inp.lower() == ("smash skeleton"):
-				print("---------------------------------------------------------")
-				print("Sick person. Have some respect mate.")
-			elif cave_inp.lower() == ("light up room"):
-				print("---------------------------------------------------------")
-				print("You would need a torch or lamp to do that.")
-			elif cave_inp.lower() == ("break skeleton"):
-				print("---------------------------------------------------------")
-				print("I have two questions: Why and With What?")
-			elif cave_inp.lower() == ("go down staircase"):
-				loop = 11
-			elif cave_inp.lower() == ("scale staircase"):
-				loop = 11
-			elif cave_inp.lower() == ("kick the bucket"):
-				print("---------------------------------------------------------")
-				print("You die.")
-				print("---------------------------------------------------------")
-				dead_inp = input("Do you want to continue? Y/N ")
-				if dead_inp.lower() == ("n"):
-					exit()
-				if dead_inp.lower() == ("y"):
-					Play_Zork()
-			elif cave_inp.lower() == ("scale staircase"):
-				loop = 11
-			else:
-				print("---------------------------------------------------------")
+#This gives the user output for each function
+def get_user_input(room):
+    print("---------------------------------------------------------")
+    if room == 1:
+        print("You find yourself at the edge of a beautiful lake aside rolling hills.")
+        print("A small pier juts out into the lake.")
+        print("A fishing rod rests on the pier.")
+        print("(You can see a white house in the distance to the south.)")
+        
+    elif room == 2:
+        print("You find yourself behind the house, unkempt ivy creeps up the beautiful old estate.")
+        print("Going west towards, the house there is a rickety window, but it's open!")
+        print("Going south will take you back to the front of the house.")
+        
+    elif room == 3:
+        print("You find yourself in a dimly lit kitchen with dust covering the floor.")
+        print("A lantern rests on the kitchen island.")
+        print("The window is to the east.")
+        print("A set of stairs go up to another room.")
+        
+    elif room == 4:
+        print("You are standing in an open field west of a white house, with a boarded front door.")
+        print("You can see a small lake to the north.")
+        print("Going east around the house there is a gate that leads to the back of the home.")
+        print("(A secret path leads southwest into the forest.)")
+        print("There is a Small Mailbox.")
+        
+    elif room == 5:
+        print("You come up the stairs to a dusty old attic.")
+        print("There is a chest in the corner.")
+        print("The staircase descends behind you.")
+        
+    elif room == 6:
+        print("Venturing into the next chamber you find yourself at the entrance to an ancient maze.")
+        print("You can see the cave entrance back to the North.")
+        print("The Maze looms to your south")
+        
+    elif room == 7:
+        print("The stone walls grow close around you, there is a fork in the path before you but all ways are dark.")
+        print("A foul stench reaches you, something lives in here.")
+        print("You can stil flee, the entrance is to the north!")
+            
+        
+    elif room == 8:
+        print("This is a forest, with trees in all directions. To the east, there appears to be sunlight.")
+        print("You see a mountain range poking above the trees to the west.")
+        
+    elif room == 9:
+        print("You are in a clearing, with a forest surrounding you on all sides. A path leads south.")
+        print("There is an open grating, descending into darkness.")
+
+    elif room == 10:
+        print("You are in a tiny cave with a dark, forbidding staircase leading down.")
+        print("There is a skeleton of a human male in one corner.")
+        print("To the south there is something in the depths of the cave, but you cant make it out.")
+
+    elif room == 11:
+        print("You have entered a mud-floored room.")
+        print("Lying half buried in the mud is an old trunk, bulging with jewels.")
+    elif room == 12:
+        print("You come to the feet of the Nandic Mountans! Their towering, snowcapped peakes loom to the west,.")
+        print("A powerful river rages to the north and the evil lands lie to the south.")
+
+    user_input= input("What do you do? ").lower()
+
+    if user_input == 'show inventory':
+        print(inventory)
+
+        
+    return user_input
 
 
-		# End of game
-		while loop == 11:
-			if loop == 11:
-				print("---------------------------------------------------------")
-				print("You have entered a mud-floored room.")
-				print("Lying half buried in the mud is an old trunk, bulging with jewels.")
-				last_inp = input("What do you do? ")
+##################################################################
+########These are the room functions##############################
+##################################################################
+def room1(user_input):
+        room = 1
+        print("---------------------------------------------------------")
+        if user_input == ("go south"):
+                room = 4
+        elif user_input == ("swim"):
+                print("You don't have a change of clothes and you aren't here on vacation.")
+        elif user_input == ("fish"):
+                print("---------------------------------------------------------")
+                print("You spend some time fishing but nothing seems to bite.")
+        elif user_input == ("kick the bucket"):
+                print("You die.")
+                print("---------------------------------------------------------")
+                ded()
+        else:
+                print("---------------------------------------------------------")
+        return room
 
-			if last_inp.lower() == ("open trunk"):
-				print("---------------------------------------------------------")
-				print("You have found the Jade Statue and have completed your quest!")
-			elif last.inp.lower() == ("kick the bucket"):
-				print("---------------------------------------------------------")
-				print("You die.")
-				print("---------------------------------------------------------")
-				dead_inp = input("Do you want to continue? Y/N ")
-				if dead_inp.lower() == ("n"):
-					exit()
-				if dead_inp.lower() == ("y"):
-					Play_Zork()
-			else:
-				print("---------------------------------------------------------")
-			
-			# Exit loop at the end of game
-			exit_inp = input("Do you want to continue? Y/N ")
-			if exit_inp.lower() == ("n"):
-				exit()
-			if exit_inp.lower() == ("y"):
-				Play_Zork()
+def room2(user_input):
+        room = 2
+        print("---------------------------------------------------------")
+        if user_input == ("go south"):
+                room = 4
+        elif user_input == ("go west"):
+                room = 3
+                print("Opening a rickety window you climb into the house")
+        elif user_input == ("kick the bucket"):
+                print("You die.")
+                print("---------------------------------------------------------")
+
+                ded()
+        else:
+                print("---------------------------------------------------------")
+        return room
+
+def room3(user_input):
+        room = 3
+        print("---------------------------------------------------------")
+        if user_input == ("go up staircase"):
+                print("You climb the creaking stairs...")
+                room = 5
+        elif user_input == ("take lantern"):
+                items.pick_up('lantern',room)
+        elif user_input == ("go east"):
+                print("You hop out the window")
+                room = 2
+        elif user_input == ("kick the bucket"):
+                print("You die.")
+                print("---------------------------------------------------------")
+
+                ded()
+        else:
+                print("---------------------------------------------------------")
+        return room 
+def room4(user_input):
+        room = 4
+        print("---------------------------------------------------------")
+        if user_input == ("take mailbox"):
+                print("It is securely anchored.")
+        elif user_input == ("open mailbox"):
+                print("Opening the small mailbox reveals a leaflet.")
+        elif user_input == ("go east"):
+                room = 2
+        elif user_input == ("go north"):
+                room = 1
+        elif user_input == ("fuckem"):
+                room = 11
+                print("RULE #1 FUCKEM")
+                print("THE GODS OF THE UNIVERSE RECOGNIZE YOUR WISEDOM! YOU'RE TRANSPORTED TO THE FINAL ROOM")
+        elif user_input == ("open door"):
+                print("The door cannot be opened.")
+        elif user_input == ("take boards"):
+                print("The boards are securely fastened.")
+        elif user_input == ("look at house"):
+                print("The house is a beautiful colonial house which is painted white. It is clear that the owners must have been extremely wealthy.")
+        elif user_input == ("go southwest"):
+                room = 8
+        elif user_input == ("read leaflet"):
+                print("Welcome to the Unofficial Python Version of Zork. Your mission is to find a Jade Statue.")
+        elif user_input == ("kick the bucket"):
+                print("You die.")
+                print("---------------------------------------------------------")
+
+                ded()
+        else:
+                print("---------------------------------------------------------")
+        return room
+
+def room5(user_input):
+        room = 5
+        print("---------------------------------------------------------")
+        if user_input == ("descend staircase"):
+                room =3
+        elif user_input == ("open chest"):
+                print("A sword lies inside the chest!")
+        elif user_input == ("take sword"):
+                items.pick_up("sword",room)
+        elif user_input == ("kick the bucket"):
+                print("You die.")
+                print("---------------------------------------------------------")
+                ded()
+        else:
+                print("---------------------------------------------------------")
+        return room
+
+def room6(user_input):
+        room = 6
+        print("---------------------------------------------------------")
+        if user_input == ("go north"):
+                room = 10
+                print("You head back to the first chamber in the cave.")
+        elif user_input == ("go south"):
+                room = 7
+                print("You enter the maze and are greeted by the stench of death.")
+        elif user_input == ("kick the bucket"):
+                print("You die.")
+                print("---------------------------------------------------------")
+                ded()
+        else:
+                print("---------------------------------------------------------")
+        return room
+
+def room7(user_input):
+        room = 7
+        print("---------------------------------------------------------")
+        if user_input == ("go north"):
+                
+                print("You escaped the maze, something was off about that place.")
+                room = 6
+        else:
+            if items.useItem('lantern',inventory):
+                print('You see the grue! Wanting to avoid trouble you leave the maze.')
+                room = 6
+            elif items.useItem('gold ring', inventory):
+                print('The little gold ring you were fingering in your pocket slips onto your finger!\n You see the grue in the distance, wanting to avoid conflict you leave the maze.')
+                room = 6
+            else:
+                
+                print("You were eaten by the grue! You should've left the maze while you had the chance.")
+                print("---------------------------------------------------------")
+                print("You die.")
+                print("---------------------------------------------------------")
+                ded()
+        return room
+def room8(user_input):
+        room = 8
+        print("---------------------------------------------------------")
+        if user_input == ("go west"):
+                
+                print("You begin a long trek towards the mountains...")
+                room = 12
+        elif user_input == ("go north"):
+                print("---------------------------------------------------------")
+                print("The forest becomes impenetrable to the North.")
+        elif user_input == ("go northeast"):
+                room = 4
+        elif user_input == ("go south"):
+                print("---------------------------------------------------------")
+                print("Storm-tossed trees block your way.")
+        elif user_input == ("go east"):
+                room = 9
+        elif user_input == ("kick the bucket"):
+                print("You die.")
+                print("---------------------------------------------------------")
+                ded()
+        else:
+                print("---------------------------------------------------------")
+        return room
+
+def room9(user_input):
+        room = 9
+        print("---------------------------------------------------------")
+        if user_input == ("go south"):
+                print("You see a large ogre and turn around.")
+        elif user_input == ("descend grating"):
+                room = 10
+        elif user_input == ("kick the bucket"):
+                print("You die.")
+                print("---------------------------------------------------------")
+
+                ded()
+        else:
+                print("---------------------------------------------------------")
+        return room     
+def room10(user_input):
+        room = 10
+        print("---------------------------------------------------------")
+        if user_input == ("descend staircase"):
+                room = 11
+        elif user_input == ("go south"):
+                print("You walk deeper into the cave...")
+                room = 6
+        elif user_input == ("take skeleton"):
+                print("Why would you do that? Are you some sort of sicko?")
+        elif user_input == ("smash skeleton"):
+                print("Sick person. Have some respect mate.")
+        elif user_input == ("light up room"):
+                print("You would need a torch or lamp to do that.")
+        elif user_input == ("break skeleton"):
+                print("I have two questions: Why and With What?")
+        elif user_input == ("go down staircase"):
+                room = 11
+        elif user_input == ("scale staircase"):
+                room = 11
+        elif user_input == ("kick the bucket"):
+                print("You die.")
+                print("---------------------------------------------------------")
+                ded()
+        else:
+                print("---------------------------------------------------------")
+        return room       
+def room11(user_input):
+        room = 11
+        print("---------------------------------------------------------")
+        if user_input == ("open trunk"):
+                print("You have found the Jade Statue and have completed your quest!")
+                ded()
+                
+        elif user_input == ("kick the bucket"):
+                print("You die.")
+                print("---------------------------------------------------------")
+                ded()
+        else:
+                print("---------------------------------------------------------")
+def room12(user_input):
+        room = 12
+        print("---------------------------------------------------------")
+        if user_input == ("go east"):
+              print("---------------------------------------------------------")
+              print ("You return to the forest.")
+              room = 8
+        elif user_input == ("go west"):
+              print("The mountains are impassiblble this time of year.")
+        elif user_input == ("go north"):
+              print("A roaring river blocks your way.")
+        elif user_input == ("go south"):
+            if items.useItem('sword', inventory):
+                print('You used your sword to kill the uruks! You found a small gold ring, but more uruks are coming!\n\n You run back to the forest')
+                items.pick_up('gold ring',12)
+                room = 8
+            else:
+                print("You wander into the evil lands and are killed by uruks")
+                ded()
+        elif user_input == ("kick the bucket"):
+                print("You die.")
+                print("---------------------------------------------------------")
+                ded()
+        else:
+                print("---------------------------------------------------------")
+        return room  
+        
+        
